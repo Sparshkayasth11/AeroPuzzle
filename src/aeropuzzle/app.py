@@ -36,7 +36,12 @@ def draw_premium_text(img, text, position, font_size=20, color=(255, 255, 255), 
     draw = ImageDraw.Draw(pil_img)
     
     font = None
-    font_names = ["segoeui.ttf", "segoeuib.ttf" if bold else "segoeui.ttf", "arial.ttf", "Arial.ttf"]
+    font_names = [
+        "segoeui.ttf", "segoeuib.ttf" if bold else "segoeui.ttf",
+        "arial.ttf", "Arial.ttf",
+        "DejaVuSans-Bold.ttf" if bold else "DejaVuSans.ttf",
+        "LiberationSans-Bold.ttf" if bold else "LiberationSans-Regular.ttf",
+    ]
     for font_name in font_names:
         try:
             font = ImageFont.truetype(font_name, font_size)
