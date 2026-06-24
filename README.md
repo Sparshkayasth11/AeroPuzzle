@@ -4,6 +4,8 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/aeropuzzle.svg)](https://pypi.org/project/aeropuzzle/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**Live Demo:** [https://aeropuzzle-9047.streamlit.app](https://aeropuzzle-9047.streamlit.app)
+
 AeroPuzzle is a real-time gesture-controlled sliding puzzle game built with Computer Vision and MediaPipe hand tracking. Capture an image from your webcam and solve the puzzle using only hand gestures—no mouse or touch input required.
 
 ---
