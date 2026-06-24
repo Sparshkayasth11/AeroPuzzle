@@ -1,1 +1,0 @@
-# No custom apt packages needed. Headless OpenCV and MediaPipe run on Streamlit's base image.
