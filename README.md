@@ -19,7 +19,7 @@ pip install aeropuzzle
 ## Run
 
 ```bash
-python -m aeropuzzle
+aeropuzzle
 ```
 
 ---
@@ -41,7 +41,7 @@ python -m aeropuzzle
 1. Launch the game:
 
 ```bash
-python -m aeropuzzle
+aeropuzzle
 ```
 
 2. Allow access to your webcam.
@@ -72,10 +72,9 @@ pip install aeropuzzle
 ## Install from source
 
 ```bash
-git clone https://github.com/Aarthirt14/AeroPuzzle.git
+git clone https://github.com/Sparshkayasth11/AeroPuzzle.git
 
 cd AeroPuzzle
-
 pip install .
 ```
 
@@ -112,7 +111,7 @@ The following dependencies are installed automatically:
 Clone the repository:
 
 ```bash
-git clone https://github.com/Aarthirt14/AeroPuzzle.git
+git clone https://github.com/Sparshkayasth11/AeroPuzzle.git
 
 cd AeroPuzzle
 ```
@@ -174,7 +173,7 @@ https://pypi.org/project/aeropuzzle/
 
 # GitHub Repository
 
-https://github.com/Aarthirt14/AeroPuzzle
+https://github.com/Sparshkayasth11/AeroPuzzle
 
 ---
 
@@ -186,6 +185,6 @@ This project is licensed under the MIT License.
 
 ## Author
 
-**Aarthi Suresh**
+**Sparshkayasth11**
 
 Built to explore Computer Vision, MediaPipe hand tracking, and natural gesture-based interaction through an interactive puzzle game.

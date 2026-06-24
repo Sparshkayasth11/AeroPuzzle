@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    { name = "Aarthirt14" },
+    { name = "Sparshkayasth11" },
 ]
 keywords = ["puzzle", "gesture", "hand-tracking", "mediapipe", "opencv", "computer-vision"]
 classifiers = [
@@ -33,9 +33,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Aarthirt14/AeroPuzzle"
-Repository = "https://github.com/Aarthirt14/AeroPuzzle"
-Issues = "https://github.com/Aarthirt14/AeroPuzzle/issues"
+Homepage = "https://github.com/Sparshkayasth11/AeroPuzzle"
+Repository = "https://github.com/Sparshkayasth11/AeroPuzzle"
+Issues = "https://github.com/Sparshkayasth11/AeroPuzzle/issues"
 
 [project.scripts]
 aeropuzzle = "aeropuzzle.main:main"
