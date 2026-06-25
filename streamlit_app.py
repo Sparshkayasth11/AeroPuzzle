@@ -1,11 +1,20 @@
+import os
+import sys
 import random
 import time
+
+# --- PROJECT PATH FIX (RENDER DEPLOYMENT KE LIYE) ---
+# Yeh code Python ko 'src' folder ke andar jhankne aur 'aeropuzzle' dhoondhne par majboor karega
+root_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(root_dir, "src"))
 
 import cv2
 import numpy as np
 import streamlit as st
-from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
+from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
+import av  # PyAV library frames handle karne ke liye
 
+# Ab yeh imports bina kisi 'ModuleNotFoundError' ke smoothly chalenge
 from aeropuzzle.hand_tracking import HandTracker
 from aeropuzzle.maze import Puzzle
 
@@ -48,7 +57,6 @@ def draw_premium_text(img, text, position, font_size=20, color=(255, 255, 255), 
     pil_img = __import__("PIL.Image").Image.fromarray(img_rgb)
     draw = __import__("PIL.ImageDraw").ImageDraw.Draw(pil_img)
     ImageFont = __import__("PIL.ImageFont").ImageFont
-
     font = None
     font_names = [
         "segoeui.ttf", "segoeuib.ttf" if bold else "segoeui.ttf",
@@ -98,7 +106,8 @@ def draw_grid(img, x1, y1, x2, y2, rows=3, cols=3):
         cv2.line(img, (x1, y1 + i * cell_h), (x2, y1 + i * cell_h), (254, 242, 0), 2)
 
 
-class AeroPuzzleTransformer(VideoTransformerBase):
+# --- MODERN STREAMLIT-WEBRTC ARCHITECTURE ---
+class AeroPuzzleProcessor(VideoProcessorBase):
     def __init__(self):
         self.tracker = HandTracker()
         self.puzzle = Puzzle(3)
@@ -117,7 +126,8 @@ class AeroPuzzleTransformer(VideoTransformerBase):
         self.shuffle_start = 0.0
         self.last_shuffle = 0.0
 
-    def transform(self, frame):
+    def recv(self, frame):
+        # PyAV se video frame lekar numpy array (BGR) mein convert karna
         img = frame.to_ndarray(format="bgr24")
         img = cv2.flip(img, 1)
 
@@ -169,7 +179,7 @@ class AeroPuzzleTransformer(VideoTransformerBase):
             self.prev_pinch = pinch
             draw_panel(img, w // 2 - 250, h - 60, 500, 40, bg_color=(20, 16, 13), opacity=0.8, border_color=(255, 255, 255), border_thickness=1)
             img = draw_premium_text(img, "Use index fingers of both hands to frame your photo.", (w // 2 - 210, h - 50), font_size=14, color=(200, 200, 200))
-            return img
+            return av.VideoFrame.from_ndarray(img, format="bgr24")
 
         output = img.copy()
         if self.sel_x1 is not None:
@@ -333,13 +343,15 @@ class AeroPuzzleTransformer(VideoTransformerBase):
                 self.end_time = None
                 self.sel_x1 = self.sel_y1 = self.sel_x2 = self.sel_y2 = None
 
-        return output
+        # Output frame ko modern format mein return karna
+        return av.VideoFrame.from_ndarray(output, format="bgr24")
 
 
+# --- BACKWARD COMPATIBLE WEBRTC CONFIG ---
 webrtc_streamer(
     key="aeropuzzle_feed",
-    video_transformer_factory=AeroPuzzleTransformer,
+    video_processor_factory=AeroPuzzleProcessor,
     media_stream_constraints={"video": True, "audio": False},
     rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-    async_transform=True,
+    async_processing=True,
 )
