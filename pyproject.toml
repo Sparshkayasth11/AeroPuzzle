@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "A gesture-controlled sliding puzzle game using real-time hand tracking."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.14"
 authors = [
     { name = "Sparshkayasth11" },
 ]

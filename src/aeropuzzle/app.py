@@ -7,12 +7,6 @@ import random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-if not hasattr(cv2, "imshow"):
-    raise RuntimeError(
-        "AeroPuzzle requires a GUI-enabled OpenCV build. "
-        "Install opencv-python (not opencv-python-headless) and rerun."
-    )
-
 from aeropuzzle.hand_tracking import HandTracker
 from aeropuzzle.maze import Puzzle
 
@@ -99,6 +93,12 @@ def draw_grid(img, x1, y1, x2, y2, rows=3, cols=3):
 # ================= MAIN ENTRY POINT =================
 def main():
     # ================= CAMERA =================
+    if not hasattr(cv2, "imshow"):
+        raise RuntimeError(
+            "AeroPuzzle desktop mode requires a GUI-enabled OpenCV build. "
+            "Install opencv-python locally and rerun."
+        )
+
     cap = cv2.VideoCapture(0)
     cap.set(3, 1280)
     cap.set(4, 720)
