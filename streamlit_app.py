@@ -214,8 +214,26 @@ class AeroPuzzleProcessor(VideoProcessorBase):
 
         return av.VideoFrame.from_ndarray(img, format="bgr24")
 
+# RTC ICE Servers Config for Render cloud bypass
+from aiortc import RTCConfiguration, RTCIceServer
+
+rtc_configuration = RTCConfiguration(
+    iceServers=[
+        RTCIceServer(urls=["stun:stun.l.google.com:19302"]),
+        RTCIceServer(urls=["stun:stun1.l.google.com:19302"]),
+        RTCIceServer(urls=["stun:stun2.l.google.com:19302"]),
+    ]
+)
+
+# Timeout windows pushed to 30.0 seconds
 webrtc_streamer(
     key="aeropuzzle_feed",
     video_processor_factory=AeroPuzzleProcessor,
     async_processing=True,
+    rtc_configuration=rtc_configuration,
+    media_stream_constraints={
+        "video": {"width": {"ideal": 640}, "height": {"ideal": 480}, "frameRate": {"ideal": 15}},
+        "audio": False
+    },
+    timeout=30.0
 )
