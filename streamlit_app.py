@@ -1,9 +1,13 @@
 import os
 import sys
 
-# System environment variables forced at script runtime entrypoint
-os.environ["MEDIAPIPE_DISABLE_GPU"] = "1"
+# Handshake manual extracted dynamic libraries path injection
+root_dir = os.path.dirname(os.path.abspath(__file__))
+apt_lib_path = os.path.join(root_dir, ".apt", "usr", "lib", "x86_64-linux-gnu")
+if os.path.exists(apt_lib_path):
+    os.environ["LD_LIBRARY_PATH"] = apt_lib_path + ":" + os.environ.get("LD_LIBRARY_PATH", "")
 
+os.environ["MEDIAPIPE_DISABLE_GPU"] = "1"
 # Standard folder paths routing structure resolution
 root_dir = os.path.dirname(os.path.abspath(__file__))
 if root_dir not in sys.path:
