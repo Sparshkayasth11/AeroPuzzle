@@ -103,8 +103,15 @@ def main():
     cap.set(3, 1280)
     cap.set(4, 720)
 
-    cv2.namedWindow("Live Puzzle", cv2.WINDOW_NORMAL)
-    cv2.setWindowProperty("Live Puzzle", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    try:
+        cv2.namedWindow("Live Puzzle", cv2.WINDOW_NORMAL)
+        cv2.setWindowProperty("Live Puzzle", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    except cv2.error as exc:
+        raise RuntimeError(
+            "AeroPuzzle desktop mode requires the full OpenCV package with GUI support. "
+            "Uninstall opencv-python-headless and install opencv-python instead: "
+            "pip uninstall opencv-python-headless && pip install opencv-python"
+        ) from exc
 
     tracker = HandTracker()
     puzzle = Puzzle(3)
