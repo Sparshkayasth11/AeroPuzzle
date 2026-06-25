@@ -1,10 +1,10 @@
 import os
 import sys
-import ctypes
 
-# ==========================================
-# 1. --- SYSTEM PATH ROUTING RESOLUTION ---
-# ==========================================
+# System environment variables forced at script runtime entrypoint
+os.environ["MEDIAPIPE_DISABLE_GPU"] = "1"
+
+# Standard folder paths routing structure resolution
 root_dir = os.path.dirname(os.path.abspath(__file__))
 if root_dir not in sys.path:
     sys.path.append(root_dir)
@@ -12,43 +12,14 @@ src_path = os.path.join(root_dir, "src")
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-# ==========================================
-# 2. --- GLOBAL BINARY LINKER FORCE-LOAD ---
-# ==========================================
-# Hamari custom-compiled dummy library ko environment path aur memory mein inject karein
-libs_dir = os.path.join(root_dir, "libs")
-dummy_lib_path = os.path.join(libs_dir, "libGLESv2.so.2")
-
-if os.path.exists(dummy_lib_path):
-    try:
-        # RTLD_GLOBAL se yeh pure system level process ke liye resident ho jayegi
-        ctypes.CDLL(dummy_lib_path, mode=ctypes.RTLD_GLOBAL)
-    except Exception as e:
-        pass
-
-# Safe Fallback System Bypass
-try:
-    ctypes.CDLL('libGLESv2.so.2')
-except Exception:
-    class MockCDLL:
-        def __init__(self, *args, **kwargs): pass
-        def __getattr__(self, name): return lambda *args, **kwargs: 0
-    sys.modules['libGLESv2.so.2'] = MockCDLL()
-    orig_cdll = ctypes.CDLL
-    def custom_cdll(name, *args, **kwargs):
-        if name and ('libGLESv2' in name or 'libglapi' in name):
-            return MockCDLL()
-        return orig_cdll(name, *args, **kwargs)
-    ctypes.CDLL = custom_cdll
-
-# External modules safe loading
+# Safe modules standard execution imports
 import cv2
 import numpy as np
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 import av
 
-# Safe Module Fallback Imports
+# Safe Layered Core Fallback System Layout
 try:
     from aeropuzzle.hand_tracking import HandTracker
     from aeropuzzle.maze import Puzzle
