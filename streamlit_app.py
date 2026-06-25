@@ -216,17 +216,17 @@ class AeroPuzzleProcessor(VideoProcessorBase):
 
 # RTC ICE Servers Config for Render cloud bypass
 from aiortc import RTCConfiguration, RTCIceServer
-
-rtc_configuration = RTCConfiguration(
-    iceServers=[
-        RTCIceServer(urls=["stun:stun.l.google.com:19302"]),
-        RTCIceServer(urls=["stun:stun1.l.google.com:19302"]),
-        RTCIceServer(urls=["stun:stun2.l.google.com:19302"]),
+# RTC ICE Servers Config as a standard Python dictionary
+rtc_configuration = {
+    "iceServers": [
+        {"urls": ["stun:stun.l.google.com:19302"]},
+        {"urls": ["stun:stun1.l.google.com:19302"]},
+        {"urls": ["stun:stun2.l.google.com:19302"]}
     ]
-)
-
+}
 # Timeout windows pushed to 30.0 seconds
 # Active Streamer Without Unsupported Timeout Argument
+# Streamer call with correct dictionary configuration
 webrtc_streamer(
     key="aeropuzzle_feed",
     video_processor_factory=AeroPuzzleProcessor,
