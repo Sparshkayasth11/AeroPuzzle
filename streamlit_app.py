@@ -234,6 +234,5 @@ webrtc_streamer(
     media_stream_constraints={
         "video": {"width": {"ideal": 640}, "height": {"ideal": 480}, "frameRate": {"ideal": 15}},
         "audio": False
-    },
-    timeout=30.0
+    }
 )
