@@ -6,6 +6,13 @@ import time
 import random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+
+if not hasattr(cv2, "imshow"):
+    raise RuntimeError(
+        "AeroPuzzle requires a GUI-enabled OpenCV build. "
+        "Install opencv-python (not opencv-python-headless) and rerun."
+    )
+
 from aeropuzzle.hand_tracking import HandTracker
 from aeropuzzle.maze import Puzzle
 

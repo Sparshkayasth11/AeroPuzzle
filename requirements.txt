@@ -1,4 +1,4 @@
-opencv-python-headless
+opencv-python>=4.8
 mediapipe
 numpy
 pillow

@@ -13,7 +13,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, WebRtcMode
+from streamlit_webrtc import streamlit_webrtc_wrapper, RTCConfiguration, VideoProcessorBase
 import av
 import cv2
 import time
@@ -585,18 +585,31 @@ with col_c:
         unsafe_allow_html=True,
     )
 
-    ctx = webrtc_streamer(
-        key="aeropuzzle",
-        mode=WebRtcMode.SENDRECV,
-        video_processor_factory=AeroPuzzleProcessor,
-        media_stream_constraints={
-            "video": {"width": {"ideal": 1280}, "height": {"ideal": 720}},
-            "audio": False,
-        },
-        async_processing=True,
+    RTC_CONFIGURATION = RTCConfiguration(
+        {
+            "iceServers": [
+                {
+                    "urls": [
+                        "stun:stun.l.google.com:19302",
+                        "stun:stun1.l.google.com:19302",
+                    ]
+                }
+            ]
+        }
     )
 
-    if ctx.state.playing:
+    ctx = streamlit_webrtc_wrapper(
+        key="aeropuzzle",
+        rtc_configuration=RTC_CONFIGURATION,
+        video_html_attrs={
+            "video": True,
+            "audio": False,
+            "style": {"width": "100%"},
+        },
+        video_processor_factory=AeroPuzzleProcessor,
+    )
+
+    if ctx and getattr(ctx, 'state', None) and getattr(ctx.state, 'playing', False):
         st.caption("🟢 Camera active — show your hands to begin!")
     else:
         st.info(
