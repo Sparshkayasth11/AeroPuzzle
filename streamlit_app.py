@@ -585,18 +585,12 @@ with col_c:
         unsafe_allow_html=True,
     )
 
-    RTC_CONFIGURATION = RTCConfiguration(
-        {
-            "iceServers": [
-                {
-                    "urls": [
-                        "stun:stun.l.google.com:19302",
-                        "stun:stun1.l.google.com:19302",
-                    ]
-                }
-            ]
-        }
-    )
+    # Use STUN servers to help establish peer-to-peer connections for client webcams
+    RTC_CONFIGURATION = RTCConfiguration({
+        "iceServers": [
+            {"urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"]}
+        ]
+    })
 
     ctx = webrtc_streamer(
         key="aeropuzzle",
