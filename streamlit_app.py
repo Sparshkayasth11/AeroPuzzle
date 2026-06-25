@@ -13,7 +13,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 
 import streamlit as st
-from streamlit_webrtc import streamlit_webrtc_wrapper, RTCConfiguration, VideoProcessorBase
+from streamlit_webrtc import RTCConfiguration, VideoProcessorBase, WebRtcMode, webrtc_streamer
 import av
 import cv2
 import time
@@ -598,15 +598,21 @@ with col_c:
         }
     )
 
-    ctx = streamlit_webrtc_wrapper(
+    ctx = webrtc_streamer(
         key="aeropuzzle",
+        mode=WebRtcMode.SENDRECV,
+        video_processor_factory=AeroPuzzleProcessor,
         rtc_configuration=RTC_CONFIGURATION,
+        media_stream_constraints={
+            "video": {"width": {"ideal": 1280}, "height": {"ideal": 720}},
+            "audio": False,
+        },
         video_html_attrs={
             "video": True,
             "audio": False,
             "style": {"width": "100%"},
         },
-        video_processor_factory=AeroPuzzleProcessor,
+        async_processing=True,
     )
 
     if ctx and getattr(ctx, 'state', None) and getattr(ctx.state, 'playing', False):
