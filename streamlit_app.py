@@ -226,6 +226,7 @@ rtc_configuration = RTCConfiguration(
 )
 
 # Timeout windows pushed to 30.0 seconds
+# Active Streamer Without Unsupported Timeout Argument
 webrtc_streamer(
     key="aeropuzzle_feed",
     video_processor_factory=AeroPuzzleProcessor,
