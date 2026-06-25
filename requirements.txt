@@ -1,11 +1,4 @@
-streamlit>=1.20.0
-streamlit-webrtc>=0.74.0
-opencv-python-headless>=4.8
+opencv-python>=4.8
 mediapipe>=0.10
 numpy>=1.24
 pillow>=10.0
-av>=10.0
-aiortc>=1.14.0
-aioice>=0.10.1
-cryptography>=40
-typing-extensions
