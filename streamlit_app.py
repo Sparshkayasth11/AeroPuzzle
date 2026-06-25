@@ -3,21 +3,36 @@ import sys
 import ctypes
 
 # ==========================================
-# 1. --- PROJECT PATH FIX (FOR RENDER) ---
+# 1. --- SYSTEM PATH ROUTING RESOLUTION ---
 # ==========================================
 root_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(root_dir, "src"))
+if root_dir not in sys.path:
+    sys.path.append(root_dir)
+src_path = os.path.join(root_dir, "src")
+if src_path not in sys.path:
+    sys.path.append(src_path)
 
 # ==========================================
-# 2. --- MEDIAPIPE OPENGL/GLES SYSTEM BYPASS ---
+# 2. --- GLOBAL BINARY LINKER FORCE-LOAD ---
 # ==========================================
+# Hamari custom-compiled dummy library ko environment path aur memory mein inject karein
+libs_dir = os.path.join(root_dir, "libs")
+dummy_lib_path = os.path.join(libs_dir, "libGLESv2.so.2")
+
+if os.path.exists(dummy_lib_path):
+    try:
+        # RTLD_GLOBAL se yeh pure system level process ke liye resident ho jayegi
+        ctypes.CDLL(dummy_lib_path, mode=ctypes.RTLD_GLOBAL)
+    except Exception as e:
+        pass
+
+# Safe Fallback System Bypass
 try:
     ctypes.CDLL('libGLESv2.so.2')
 except Exception:
     class MockCDLL:
         def __init__(self, *args, **kwargs): pass
         def __getattr__(self, name): return lambda *args, **kwargs: 0
-    
     sys.modules['libGLESv2.so.2'] = MockCDLL()
     orig_cdll = ctypes.CDLL
     def custom_cdll(name, *args, **kwargs):
@@ -26,16 +41,20 @@ except Exception:
         return orig_cdll(name, *args, **kwargs)
     ctypes.CDLL = custom_cdll
 
-# Now safe to import external packages
+# External modules safe loading
 import cv2
 import numpy as np
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase
 import av
 
-# Import local modules from src folder
-from aeropuzzle.hand_tracking import HandTracker
-from aeropuzzle.maze import Puzzle
+# Safe Module Fallback Imports
+try:
+    from aeropuzzle.hand_tracking import HandTracker
+    from aeropuzzle.maze import Puzzle
+except (ModuleNotFoundError, ImportError):
+    from src.aeropuzzle.hand_tracking import HandTracker
+    from src.aeropuzzle.maze import Puzzle
 
 # ==========================================
 # 3. --- CORE APPLICATION CODE ---
