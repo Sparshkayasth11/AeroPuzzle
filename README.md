@@ -41,7 +41,7 @@ aeropuzzle
 1. Launch the game:
 
 ```bash
-aeropuzzle
+streamlit run streamlit_app.py
 ```
 
 2. Allow access to your webcam.
