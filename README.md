@@ -111,9 +111,8 @@ The following dependencies are installed automatically:
 Clone the repository:
 
 ```bash
-git clone https://github.com/Sparshkayasth11/AeroPuzzle.git
-
-cd AeroPuzzle
+git clone [https://github.com/Sparshkayasth11/AeroPuzzle.git](https://github.com/Sparshkayasth11/AeroPuzzle.git)
+cd MeraAeroPuzzle
 ```
 
 Install in editable mode:
